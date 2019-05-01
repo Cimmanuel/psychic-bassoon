@@ -6,19 +6,17 @@ from django.conf import settings
 from django.core.wsgi import get_wsgi_application
 from decouple import config, Csv
 
-secret_key = token_urlsafe(64)
-
 settings.configure(
 	DEBUG=config('DEBUG', default=False, cast=bool),
-	SECRET_KEY=config('SECRET_KEY', default=secret_key),
-	ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv()),
+	SECRET_KEY=config('SECRET_KEY', default='{{ secret_key }}'),
+	ALLOWED_HOSTS=config('ALLOWED_HOSTS', cast=Csv()),
 	ROOT_URLCONF=__name__,
 	MIDDLEWARE=[
 		'django.middleware.common.CommonMiddleware',
 		'django.middleware.csrf.CsrfViewMiddleware',
 		'django.middleware.clickjacking.XFrameOptionsMiddleware',
 	],
-	DATABASES = {
+	DATABASES={
 		'default': {
 			'ENGINE': 'django.db.backends.sqlite3',
 			'NAME': ('db.sqlite3'),
@@ -27,7 +25,7 @@ settings.configure(
 )
 
 def index(request):
-	return HttpResponse("Hello, this is a warm up project!")
+	return HttpResponse("<h1>Hello, this is a minimal project setup. Configure as you please!</h1>")
 
 urlpatterns = [
 	path('', index, name='index')
